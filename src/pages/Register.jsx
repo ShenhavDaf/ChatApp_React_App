@@ -11,6 +11,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [error, setError] = useState(false);
+  const [img, setImg] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -67,9 +68,14 @@ const Register = () => {
           <input type="text" placeholder="Display name" />
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
-          <input style={{ display: "none" }} type="file" id="imageFile" />
+          <input
+            style={{ display: "none" }}
+            type="file"
+            id="imageFile"
+            onChange={(e) => setImg(e.target.files[0])}
+          />
           <label htmlFor="imageFile">
-            <img src={addAvatar} alt=""></img>
+            <img src={img ? URL.createObjectURL(img) : addAvatar} alt=""></img>
             <span>Add a avatar</span>
           </label>
           <button>Sign Up</button>

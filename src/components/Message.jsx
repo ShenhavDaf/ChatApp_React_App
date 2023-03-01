@@ -1,19 +1,27 @@
-import avatarIcon from "../images/avatarIcon.png";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
 
-const Message = () => {
+const Message = ({ msgInfo }) => {
+  const { currUser } = useContext(AuthContext);
+  const { data } = useContext(ChatContext);
+
   return (
-    <div className="message owner">
+    <div className={`message ${msgInfo.senderID === currUser.uid && "owner"}`}>
       <div className="messageInfo">
-        <img src={avatarIcon} alt="" />
+        <img
+          src={
+            msgInfo.senderID === currUser.uid
+              ? currUser.photoURL
+              : data.user.photoURL
+          }
+          alt=""
+        />
       </div>
       <div className="messageContent">
-        <p>This is a message</p>
+        <img src={msgInfo.image} alt="" />
+        {msgInfo.text && <p>{msgInfo.text}</p>}
         <span>Just now</span>
-        {/* <img
-          src="https://cdn.pixabay.com/photo/2021/10/01/18/53/corgi-6673343_960_720.jpg"
-          alt=""
-        /> */}
-        <img src="" alt="" />
       </div>
     </div>
   );
