@@ -5,9 +5,16 @@ import { ChatContext } from "../context/ChatContext";
 const Message = ({ msgInfo }) => {
   const { currUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
+  // const ref = useRef();
+  // useEffect(() => {
+  //   ref.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [msgInfo]);
 
   return (
-    <div className={`message ${msgInfo.senderID === currUser.uid && "owner"}`}>
+    <div
+      // ref={ref}
+      className={`message ${msgInfo.senderID === currUser.uid && "owner"}`}
+    >
       <div className="messageInfo">
         <img
           src={

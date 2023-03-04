@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../components/Logo";
 import addAvatar from "../images/addAvatar.png";
+import loadingGif from "../images/createAccount.gif";
 
 // Firebase imports
 import { auth, storage, db } from "../firebase";
@@ -12,6 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 const Register = () => {
   const [error, setError] = useState(false);
   const [img, setImg] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,6 +22,8 @@ const Register = () => {
     const email = e.target[1].value;
     const password = e.target[2].value;
     const image = e.target[3].files[0];
+
+    setLoading(true);
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -31,6 +35,7 @@ const Register = () => {
       uploadTask.on(
         (error) => {
           setError(true);
+          setLoading(false);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -56,6 +61,7 @@ const Register = () => {
       //
     } catch (err) {
       setError(true);
+      setLoading(false);
     }
   };
 
@@ -64,26 +70,39 @@ const Register = () => {
       <div className="formWrapper">
         <Logo />
         <span className="title">Register</span>
-        <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Display name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <input
-            style={{ display: "none" }}
-            type="file"
-            id="imageFile"
-            onChange={(e) => setImg(e.target.files[0])}
-          />
-          <label htmlFor="imageFile">
-            <img src={img ? URL.createObjectURL(img) : addAvatar} alt=""></img>
-            <span>Add a avatar</span>
-          </label>
-          <button>Sign Up</button>
-          {error && <span style={{ color: "red" }}>Somting went wrong...</span>}
-        </form>
-        <p>
-          You do have an account? <Link to="/login">Login</Link>
-        </p>
+
+        {loading ? (
+          <img src={loadingGif} alt="" width="250" height="250" />
+        ) : (
+          <>
+            <form onSubmit={handleSubmit}>
+              <input required type="text" placeholder="Display name" />
+              <input required type="email" placeholder="Email" />
+              <input required type="password" placeholder="Password" />
+              <input
+                required
+                style={{ display: "none" }}
+                type="file"
+                id="imageFile"
+                onChange={(e) => setImg(e.target.files[0])}
+              />
+              <label htmlFor="imageFile">
+                <img
+                  src={img ? URL.createObjectURL(img) : addAvatar}
+                  alt=""
+                ></img>
+                <span>Add a avatar (required)</span>
+              </label>
+              <button>Sign Up</button>
+              {error && (
+                <span style={{ color: "red" }}>Somting went wrong...</span>
+              )}
+            </form>
+            <p>
+              You do have an account? <Link to="/login">Login</Link>
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

@@ -214,6 +214,11 @@ body {
         }
       }
 
+      h3 {
+        color: $backgroundColor;
+        padding: 10px;
+      }
+
       // connections class
       .userChat {
         padding: 10px;
@@ -275,7 +280,11 @@ body {
         background-color: #ddddf7;
         padding: 10px;
         height: calc(100% - 100px);
-        overflow-y: scroll;
+        overflow-y: auto;
+
+        // scroll pin to bottom
+        display: flex;
+        flex-direction: column-reverse; // In 'Messages' component the data was reversed
 
         .message {
           display: flex;
@@ -369,8 +378,21 @@ body {
             padding: 10px 15px;
             background-color: #8da4f1;
             color: white;
+            border-radius: 5px;
           }
         }
+      }
+
+      h2 {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 20%;
+
+        text-align: center;
+        text-shadow: 1px 1px 1.5px black;
+        background-image: url("./images/initBackground.png");
       }
     }
   }

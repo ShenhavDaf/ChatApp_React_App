@@ -10,7 +10,7 @@ const Messages = () => {
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "Chats", data.chatId), (doc) => {
-      doc.exists() && setMessages(doc.data().messages);
+      doc.exists() && setMessages(doc.data().messages.reverse()); // reverse for scrollbar design
     });
 
     return () => {
